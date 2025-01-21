@@ -7,26 +7,23 @@
         mc:Ignorable="d"
         Title="Dark AutoTyper" Height="450" Width="600">
     <Grid>
-        <!-- Hintergrundbild -->
-        <Image Source="/Piano.png" 
+        <Image Source="/KeyBoard.png" 
                Stretch="Fill" 
                HorizontalAlignment="Stretch" 
                VerticalAlignment="Stretch" 
                Panel.ZIndex="-1" />
 
-        <!-- Eingabefeld für das Music Sheet -->
         <TextBox x:Name="MusicSheetInput" 
                  HorizontalAlignment="Center" 
                  VerticalAlignment="Top" 
                  Margin="0,34,0,0" 
                  Width="560" 
-                 Height="169" 
+                 Height="183" 
                  TextWrapping="Wrap" 
                  AcceptsReturn="True" 
                  FontSize="16" 
                  VerticalScrollBarVisibility="Auto" />
 
-        <!-- Play Button -->
         <Button x:Name="PlayButton" 
                 Content="Start" 
                 HorizontalAlignment="Left" 
@@ -37,7 +34,6 @@
                 FontSize="16" 
                 Click="PlayButton_Click" Background="#FF5BED57" />
 
-        <!-- Stop Button -->
         <Button x:Name="StopButton" 
                 Content="Stop" 
                 HorizontalAlignment="Left" 
@@ -48,7 +44,6 @@
                 FontSize="16" 
                 Click="StopButton_Click" RenderTransformOrigin="0.505,3.576" Background="#FFEF4444" />
 
-        <!-- Load Button -->
         <Button x:Name="LoadButton" 
                 Content="Load" 
                 HorizontalAlignment="Left" 
@@ -59,7 +54,6 @@
                 FontSize="16" 
                 Click="LoadButton_Click" Background="#FF56DCE6" />
 
-        <!-- Save Button -->
         <Button x:Name="SaveButton" 
                 Content="Save" 
                 HorizontalAlignment="Left" 
@@ -70,7 +64,6 @@
                 FontSize="16" 
                 Click="SaveButton_Click" Background="#FFE2D97C" />
 
-        <!-- Statusanzeige -->
         <TextBlock x:Name="StatusText" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Top" 
@@ -78,7 +71,7 @@
                    FontSize="14" 
                    Text="Status: Ready to start!" Foreground="Black" FontWeight="Bold" />
         <TextBox x:Name="Title" HorizontalAlignment="Center" Margin="0,8,0,0" TextWrapping="Wrap" FontSize ="18" VerticalAlignment="Top" Width="174" Height="26"/>
-        <TextBox x:Name="Cooldown" HorizontalAlignment="Left" Margin="20,327,0,0" TextWrapping="Wrap" Text="60" FontSize ="18" VerticalAlignment="Top" Width="100" Height="26"/>
+        <TextBox x:Name="Cooldown" HorizontalAlignment="Left" Margin="20,327,0,0" TextWrapping="Wrap" Text="60000" FontSize ="18" VerticalAlignment="Top" Width="100" Height="26"/>
 
     </Grid>
 </Window>

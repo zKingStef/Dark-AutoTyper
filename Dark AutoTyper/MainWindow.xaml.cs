@@ -45,7 +45,7 @@ namespace Dark_AutoTyper
 
             try
             {
-                await PlayMusicSheet(musicSheet, _cancellationTokenSource.Token);
+                await StartTyping(musicSheet, _cancellationTokenSource.Token);
                 StatusText.Text = "Status: Finished typing!";
             }
             catch (OperationCanceledException)
@@ -68,33 +68,50 @@ namespace Dark_AutoTyper
             }
         }
 
-        private async Task PlayMusicSheet(string sheet, CancellationToken token)
+        private async Task StartTyping(string sheet, CancellationToken token)
         {
-            for (int i = 0; i < sheet.Length; i++)
+            while (true)
             {
-                token.ThrowIfCancellationRequested();
-                char command = sheet[i];
-
-                await Task.Delay(200, token);
-
-                if (command == ' ')
+                for (int i = 0; i < sheet.Length; i++)
                 {
-                    await Task.Delay(300, token);
+                    token.ThrowIfCancellationRequested();
+                    char command = sheet[i];
+
+                    if (command == '|')
+                    {
+                        PressKey("{ENTER}", isSpecialKey: true);
+                        await Task.Delay(300, token);
+                    }
+                    else
+                    {
+                        PressKey(command.ToString());
+                        await Task.Delay(300, token);
+                    }
                 }
-                else
+
+                await Task.Delay(300, token);
+
+                if (int.TryParse(Cooldown.Text, out int cooldown) && cooldown > 0)
                 {
-                    PressKey(command.ToString());
-                    await Task.Delay(100, token);
+                    StatusText.Text = $"Status: Cooling down for {cooldown} ms...";
+                    await Task.Delay(cooldown);
                 }
             }
         }
 
-        private void PressKey(string key)
+        private void PressKey(string key, bool isSpecialKey = false)
         {
             var simulator = new InputSimulator();
             Console.WriteLine($"Pressing key: {key}");
 
-            simulator.Keyboard.TextEntry(key);
+            if (isSpecialKey)
+            {
+                simulator.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.RETURN);
+            }
+            else
+            {
+                simulator.Keyboard.TextEntry(key);
+            }
         }
 
         private void PressKeysSimultaneously(string keys)
