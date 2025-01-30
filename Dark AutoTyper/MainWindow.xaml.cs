@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,12 @@ namespace Dark_AutoTyper
     public partial class MainWindow : Window
     {
         private CancellationTokenSource _cancellationTokenSource;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
+
+        private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
+        private const uint MOUSEEVENTF_LEFTUP = 0x0004;
 
         public MainWindow()
         {
@@ -74,13 +81,21 @@ namespace Dark_AutoTyper
             {
                 for (int i = 0; i < sheet.Length; i++)
                 {
+                    
+
                     token.ThrowIfCancellationRequested();
                     char command = sheet[i];
 
                     if (command == '|')
                     {
                         PressKey("{ENTER}", isSpecialKey: true);
-                        await Task.Delay(300, token);
+
+                        int hw_newFlagToMakeAutoClickerEnabled;
+                        //await Task.Delay(3000, token);
+                        //mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, UIntPtr.Zero);
+                        //await Task.Delay(300, token);
+                        //mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
+                        //await Task.Delay(400, token);
                     }
                     else
                     {
