@@ -90,12 +90,14 @@ namespace Dark_AutoTyper
                     {
                         PressKey("{ENTER}", isSpecialKey: true);
 
-                        int hw_newFlagToMakeAutoClickerEnabled;
-                        //await Task.Delay(3000, token);
-                        //mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, UIntPtr.Zero);
-                        //await Task.Delay(300, token);
-                        //mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
-                        //await Task.Delay(400, token);
+                        if (AutoClickEnabled.IsChecked == true)
+                        {
+                            await Task.Delay(3000, token);
+                            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, UIntPtr.Zero);
+                            await Task.Delay(300, token);
+                            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
+                            await Task.Delay(400, token);
+                        }
                     }
                     else
                     {

@@ -72,6 +72,7 @@
                    Text="Status: Ready to start!" Foreground="Black" FontWeight="Bold" />
         <TextBox x:Name="Title" HorizontalAlignment="Center" Margin="0,8,0,0" TextWrapping="Wrap" FontSize ="18" VerticalAlignment="Top" Width="174" Height="26"/>
         <TextBox x:Name="Cooldown" HorizontalAlignment="Left" Margin="20,327,0,0" TextWrapping="Wrap" Text="60000" FontSize ="18" VerticalAlignment="Top" Width="100" Height="26"/>
+        <CheckBox x:Name="AutoClickEnabled" Content="AutoClicker" HorizontalAlignment="Left" Margin="20,312,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
