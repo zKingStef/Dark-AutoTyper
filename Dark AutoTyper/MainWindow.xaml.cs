@@ -1,23 +1,11 @@
 ﻿using Microsoft.Win32;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WindowsInput;
 
 namespace Dark_AutoTyper
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private CancellationTokenSource _cancellationTokenSource;
@@ -81,8 +69,6 @@ namespace Dark_AutoTyper
             {
                 for (int i = 0; i < sheet.Length; i++)
                 {
-                    
-
                     token.ThrowIfCancellationRequested();
                     char command = sheet[i];
 
@@ -98,6 +84,12 @@ namespace Dark_AutoTyper
                             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
                             await Task.Delay(400, token);
                         }
+
+                        if (int.TryParse(Cooldown.Text, out int cooldown) && cooldown > 0)
+                        {
+                            StatusText.Text = $"Status: Cooling down for {cooldown} s...";
+                            await Task.Delay(TimeSpan.FromSeconds(cooldown), token);
+                        }
                     }
                     else
                     {
@@ -108,15 +100,15 @@ namespace Dark_AutoTyper
 
                 await Task.Delay(300, token);
 
-                if (int.TryParse(Cooldown.Text, out int cooldown) && cooldown > 0)
+                if (int.TryParse(Cooldown.Text, out int cooldown2) && cooldown2 > 0)
                 {
-                    StatusText.Text = $"Status: Cooling down for {cooldown} ms...";
-                    await Task.Delay(cooldown);
+                    StatusText.Text = $"Status: Cooling down for {cooldown2} s...";
+                    await Task.Delay(TimeSpan.FromSeconds(cooldown2), token);
                 }
             }
         }
 
-        private void PressKey(string key, bool isSpecialKey = false)
+        private static void PressKey(string key, bool isSpecialKey = false)
         {
             var simulator = new InputSimulator();
             Console.WriteLine($"Pressing key: {key}");
@@ -131,7 +123,7 @@ namespace Dark_AutoTyper
             }
         }
 
-        private void PressKeysSimultaneously(string keys)
+        private static void PressKeysSimultaneously(string keys)
         {
             var simulator = new InputSimulator();
             Console.WriteLine($"Pressing keys simultaneously: {keys}");
