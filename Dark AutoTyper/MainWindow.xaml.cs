@@ -23,6 +23,7 @@ namespace Dark_AutoTyper
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
+            int startingCooldown = 3;
             string musicSheet = MusicSheetInput.Text;
 
             if (string.IsNullOrWhiteSpace(musicSheet))
@@ -31,17 +32,19 @@ namespace Dark_AutoTyper
                 return;
             }
 
-            StatusText.Text = "Status: Preparing to type...";
+            await RunCountdown(
+                                startingCooldown,
+                                "Status: Preparing to type, remaining",
+                                _cancellationTokenSource.Token
+                            );
 
             await Task.Delay(3000);
 
-            StatusText.Text = "Status: Typing...";
             _cancellationTokenSource = new CancellationTokenSource();
 
             try
             {
                 await StartTyping(musicSheet, _cancellationTokenSource.Token);
-                StatusText.Text = "Status: Finished typing!";
             }
             catch (OperationCanceledException)
             {
@@ -53,6 +56,7 @@ namespace Dark_AutoTyper
             }
         }
 
+
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
             if (_cancellationTokenSource != null)
@@ -63,50 +67,92 @@ namespace Dark_AutoTyper
             }
         }
 
+
         private async Task StartTyping(string sheet, CancellationToken token)
         {
             while (true)
             {
+                // Read UI values once per loop iteration
+                bool autoClick = AutoClickEnabled.IsChecked == true;
+
+                int perMessageCooldown = 0;
+                int afterRunCooldown = 0;
+
+                int.TryParse(CooldownPerMessage.Text, out perMessageCooldown);
+                int.TryParse(CooldownAfterRun.Text, out afterRunCooldown);
+
                 for (int i = 0; i < sheet.Length; i++)
                 {
                     token.ThrowIfCancellationRequested();
                     char command = sheet[i];
 
+                    // Show typing status for normal characters
+                    StatusText.Text = "Status: Typing...";
+
                     if (command == '|')
                     {
+                        // Inform that message is being sent
+                        StatusText.Text = "Status: Sending message...";
+
+                        // Send enter key
                         PressKey("{ENTER}", isSpecialKey: true);
 
-                        if (AutoClickEnabled.IsChecked == true)
+                        // Auto click if enabled
+                        if (autoClick)
                         {
+                            // Wait before clicking so UI can react
                             await Task.Delay(3000, token);
+
+                            // Mouse down
                             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, UIntPtr.Zero);
                             await Task.Delay(300, token);
+
+                            // Mouse up
                             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
                             await Task.Delay(400, token);
                         }
 
-                        if (int.TryParse(Cooldown.Text, out int cooldown) && cooldown > 0)
+                        // Check if this is the last message (no further '|' in the sheet)
+                        bool isLastMessage = sheet.IndexOf('|', i + 1) == -1;
+
+                        // Per-message cooldown only if there is another message after this one
+                        if (!isLastMessage && perMessageCooldown > 0)
                         {
-                            StatusText.Text = $"Status: Cooling down for {cooldown} s...";
-                            await Task.Delay(TimeSpan.FromSeconds(cooldown), token);
+                            await RunCountdown(
+                                perMessageCooldown,
+                                "Status: Cooling down, remaining",
+                                token
+                            );
                         }
                     }
                     else
                     {
+                        // Type normal character
                         PressKey(command.ToString());
+
+                        // Delay between characters to simulate typing speed
                         await Task.Delay(300, token);
                     }
                 }
 
+                // Small technical delay after a full run (optional)
                 await Task.Delay(300, token);
 
-                if (int.TryParse(Cooldown.Text, out int cooldown2) && cooldown2 > 0)
+                // After-run cooldown (always after completing the sheet)
+                if (afterRunCooldown > 0)
                 {
-                    StatusText.Text = $"Status: Cooling down for {cooldown2} s...";
-                    await Task.Delay(TimeSpan.FromSeconds(cooldown2), token);
+                    await RunCountdown(
+                        afterRunCooldown,
+                        "Status: Cooling down after run, remaining",
+                        token
+                    );
                 }
+
+
+                StatusText.Text = "Status: Run finished";
             }
         }
+
 
         private static void PressKey(string key, bool isSpecialKey = false)
         {
@@ -123,6 +169,7 @@ namespace Dark_AutoTyper
             }
         }
 
+
         private static void PressKeysSimultaneously(string keys)
         {
             var simulator = new InputSimulator();
@@ -133,6 +180,7 @@ namespace Dark_AutoTyper
                 simulator.Keyboard.TextEntry(key.ToString());
             }
         }
+
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
@@ -157,6 +205,7 @@ namespace Dark_AutoTyper
                 }
             }
         }
+
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -185,6 +234,25 @@ namespace Dark_AutoTyper
                 {
                     StatusText.Text = $"Status: Error saving file - {ex.Message}";
                 }
+            }
+        }
+
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Not implemented yet
+        }
+
+
+        private async Task RunCountdown(int seconds, string prefix, CancellationToken token)
+        {
+            // Simple countdown that updates StatusText once per second
+            for (int remaining = seconds; remaining > 0; remaining--)
+            {
+                token.ThrowIfCancellationRequested();
+
+                StatusText.Text = $"{prefix} {remaining}s...";
+                await Task.Delay(1000, token); // Wait 1 second between updates
             }
         }
     }

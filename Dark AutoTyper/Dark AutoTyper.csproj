@@ -11,19 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="KeyBoard.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Images\LEDKeyboard.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="InputSimulator" Version="1.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="KeyBoard.png" />
   </ItemGroup>
 
 </Project>

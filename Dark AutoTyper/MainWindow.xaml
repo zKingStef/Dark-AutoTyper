@@ -5,74 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dark_AutoTyper"
         mc:Ignorable="d"
-        Title="Dark AutoTyper" Height="450" Width="600">
+        Title="Dark AutoTyper" Height="465" Width="600" Background="#FF8C8484">
     <Grid>
         <Image Source="/KeyBoard.png" 
                Stretch="Fill" 
-               HorizontalAlignment="Stretch" 
-               VerticalAlignment="Stretch" 
-               Panel.ZIndex="-1" />
+               Panel.ZIndex="-1" Margin="0,0,0,-29" />
 
         <TextBox x:Name="MusicSheetInput" 
                  HorizontalAlignment="Center" 
                  VerticalAlignment="Top" 
-                 Margin="0,34,0,0" 
+                 Margin="0,52,0,0" 
                  Width="560" 
-                 Height="183" 
+                 Height="201" 
                  TextWrapping="Wrap" 
                  AcceptsReturn="True" 
                  FontSize="16" 
-                 VerticalScrollBarVisibility="Auto" />
+                 VerticalScrollBarVisibility="Auto" Background="#FF263B65" Foreground="White" />
 
         <Button x:Name="PlayButton" 
-                Content="Start" 
+                Content="▶️" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
-                Margin="20,368,0,0" 
-                Width="100" 
-                Height="40"
+                Margin="20,353,0,0" 
+                Width="50" 
+                Height="30"
                 FontSize="16" 
                 Click="PlayButton_Click" Background="#FF5BED57" />
 
         <Button x:Name="StopButton" 
-                Content="Stop" 
+                Content="⏹️" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
-                Margin="135,368,0,0" 
-                Width="100" 
-                Height="40"
+                Margin="20,388,0,0" 
+                Width="50" 
+                Height="30"
                 FontSize="16" 
                 Click="StopButton_Click" RenderTransformOrigin="0.505,3.576" Background="#FFEF4444" />
 
+        <Button x:Name="SettingsButton" 
+        Content="⚙️" 
+        HorizontalAlignment="Left" 
+        VerticalAlignment="Top" 
+        Margin="540,14,0,0" 
+        Width="40" 
+        Height="33"
+        FontSize="16" 
+        Visibility="Hidden"
+        Click="SettingsButton_Click" RenderTransformOrigin="0.505,3.576" Background="#FF927979" />
+
         <Button x:Name="LoadButton" 
-                Content="Load" 
+                Content="📝" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
-                Margin="367,368,0,0" 
-                Width="100" 
-                Height="40"
+                Margin="530,353,0,0" 
+                Width="50" 
+                Height="30"
                 FontSize="16" 
                 Click="LoadButton_Click" Background="#FF56DCE6" />
 
         <Button x:Name="SaveButton" 
-                Content="Save" 
+                Content="💾" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
-                Margin="480,368,0,0" 
-                Width="100" 
-                Height="40"
+                Margin="530,388,0,0" 
+                Width="50" 
+                Height="30"
                 FontSize="16" 
                 Click="SaveButton_Click" Background="#FFE2D97C" />
 
         <TextBlock x:Name="StatusText" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Top" 
-                   Margin="0,344,0,0" 
+                   Margin="0,384,0,0" 
                    FontSize="14" 
                    Text="Status: Ready to start!" Foreground="Black" FontWeight="Bold" />
-        <TextBox x:Name="Title" HorizontalAlignment="Center" Margin="0,8,0,0" TextWrapping="Wrap" FontSize ="18" VerticalAlignment="Top" Width="174" Height="26"/>
-        <TextBox x:Name="Cooldown" HorizontalAlignment="Left" Margin="20,327,0,0" TextWrapping="Wrap" Text="60000" FontSize ="18" VerticalAlignment="Top" Width="100" Height="26"/>
-        <CheckBox x:Name="AutoClickEnabled" Content="AutoClicker" HorizontalAlignment="Left" Margin="20,312,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="Title" HorizontalAlignment="Center" Margin="0,14,0,0" TextWrapping="Wrap" FontSize ="18" VerticalAlignment="Top" Width="174" Height="26" Background="#FF324B7D" Foreground="White"/>
+        <TextBox x:Name="CooldownPerMessage" HorizontalAlignment="Left" Margin="499,288,0,0" TextWrapping="Wrap" Text="60" FontSize ="18" VerticalAlignment="Top" Width="81" Height="26"/>
+        <TextBox x:Name="CooldownAfterRun" HorizontalAlignment="Left" Margin="499,319,0,0" TextWrapping="Wrap" Text="120" FontSize ="18" VerticalAlignment="Top" Width="81" Height="26"/>
+        <CheckBox x:Name="AutoClickEnabled" Content="AutoClicker" HorizontalAlignment="Left" Margin="499,268,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.173,1.394" Height="20"/>
+        <Label Content="Cooldown Per Message" HorizontalAlignment="Left" Height="31" Margin="364,288,0,0" VerticalAlignment="Top" Width="135"/>
+        <Label Content="Cooldown After Run" HorizontalAlignment="Left" Height="32" Margin="364,316,0,0" VerticalAlignment="Top" Width="135"/>
 
     </Grid>
 </Window>
